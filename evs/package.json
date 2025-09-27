@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "zathura-ethrun",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@gsap/react": "^2.1.2",
-    "@phosphor-icons/react": "^2.1.10",
-    "gsap": "^3.13.0",
+    "kaplay": "^3001.0.19",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0"

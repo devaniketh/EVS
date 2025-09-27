@@ -18,8 +18,8 @@ export default function Hero() {
 
     tl.from(headingSplit.lines, {
       y: 30,
-      filter: "blur(20px)",
-      stagger: 0.1,
+      filter: "blur(5px)",
+      stagger: 0.2,
       opacity: 0,
       duration: 0.8,
       ease: "sine.inOut",

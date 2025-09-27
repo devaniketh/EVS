@@ -1,8 +1,8 @@
 import "@/styles.css";
 import type { Metadata } from "next";
 
-import Navbar from "@/components/sections/common/Navbar";
 import SmoothScroll from "@/components/sections/common/SmoothScroll";
+import Navbar from "@/components/sections/common/Navbar";
 
 export const metadata: Metadata = {
   title: "Zathura",

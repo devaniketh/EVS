@@ -55,7 +55,7 @@ export default function Steps() {
         },
         {
           width: "50%",
-          ease: "back.inOut",
+          ease: "power2.inOut",
           duration: 0.8,
         }
       )
@@ -66,8 +66,9 @@ export default function Steps() {
         },
         {
           opacity: 1,
+          duration: 0.5,
         },
-        "<0.4"
+        "<0.55"
       );
     const animation2 = gsap
       .timeline({ paused: true })
@@ -78,7 +79,7 @@ export default function Steps() {
         },
         {
           width: "50%",
-          ease: "back.inOut",
+          ease: "power2.inOut",
           duration: 0.8,
         }
       )
@@ -89,8 +90,9 @@ export default function Steps() {
         },
         {
           opacity: 1,
+          duration: 0.5,
         },
-        "<0.4"
+        "<0.55"
       );
     const animation3 = gsap
       .timeline({ paused: true })
@@ -101,7 +103,7 @@ export default function Steps() {
         },
         {
           width: "50%",
-          ease: "back.inOut",
+          ease: "power2.inOut",
           duration: 0.8,
         }
       )
@@ -112,8 +114,9 @@ export default function Steps() {
         },
         {
           opacity: 1,
+          duration: 0.5,
         },
-        "<0.4"
+        "<0.55"
       );
 
     card1Ref.current?.addEventListener("mouseenter", () => animation1.play());
@@ -136,6 +139,7 @@ export default function Steps() {
         <h1 className="font-head text-6xl uppercase font-bold">How it works</h1>
         <div className="flex justify-center items-center gap-8 mt-10">
           <Card
+            className="origin-left"
             ref={card1Ref}
             descRef={desc1Ref}
             icon="GameControllerIcon"
@@ -143,6 +147,7 @@ export default function Steps() {
             description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat enim, itaque."
           />
           <Card
+            className="origin-center"
             ref={card2Ref}
             descRef={desc2Ref}
             icon="CoinIcon"
@@ -150,6 +155,7 @@ export default function Steps() {
             description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat enim, itaque."
           />
           <Card
+            className="origin-right"
             ref={card3Ref}
             descRef={desc3Ref}
             icon="ChartLine"

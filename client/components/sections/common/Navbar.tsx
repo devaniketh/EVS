@@ -1,17 +1,44 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   CaretDownIcon,
   GameControllerIcon,
   WalletIcon,
 } from "@phosphor-icons/react";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
+  const navRef = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useGSAP(() => {
+    if (typeof window !== "undefined") {
+      setScrolled(window.scrollY > 10);
+    }
+
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "top -10",
+      onEnter: () => setScrolled(true),
+      onLeaveBack: () => setScrolled(false),
+    });
+  }, []);
   return (
     <header className="fixed top-4 left-0 right-0 w-full z-50">
       <div className="container mx-auto">
-        <div className="mx-4 bg-background/40 backdrop-blur-[5px] border-2 border-foreground/15 flex items-center justify-between py-4 px-8">
+        <div
+          ref={navRef}
+          className={`flex items-center justify-between py-4 px-8 border-2 transition-all duration-800 mx-auto ${
+            scrolled
+              ? "bg-background/50 backdrop-blur-[5px] border-foreground/15 max-w-6xl"
+              : "bg-transparent border-transparent max-w-full"
+          }`}>
           <Link
             href={"/"}
             className="text-4xl font-head uppercase font-bold group select-none">
