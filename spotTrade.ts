@@ -6,7 +6,7 @@ import { ethers, Wallet } from "ethers";
 // Update these addresses as needed for your asset
 const USDC_ADDRESS = "0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"; // USDC mainnet
 const ETH_ADDRESS = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"; // Native ETH for 1inch
-const ONEINCH_API_V6_URL = "https://api.1inch.dev/swap/v6.0";
+const ONEINCH_API_V6_URL = "https://api.1inch.dev/swap/v6.1";
 
 interface OneInchConfig {
   apiKey: string;
