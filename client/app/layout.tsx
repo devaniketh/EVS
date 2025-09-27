@@ -1,21 +1,11 @@
 import "@/styles.css";
 import type { Metadata } from "next";
-import { Instrument_Sans, Instrument_Serif } from "next/font/google";
 
-const insans = Instrument_Sans({
-  weight: "variable",
-  variable: "--font-insans",
-  subsets: ["latin"],
-});
-
-const inserif = Instrument_Serif({
-  weight: "400",
-  variable: "--font-inserif",
-  subsets: ["latin"],
-});
+import Navbar from "@/components/sections/common/Navbar";
+import SmoothScroll from "@/components/sections/common/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: "",
+  title: "Zathura",
   description: "",
 };
 
@@ -26,9 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased ${insans.variable} ${inserif.variable} font-sans`}>
-        {children}
+      <body className={`antialiased font-sans`}>
+        <Navbar />
+        <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );
