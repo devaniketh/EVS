@@ -16,7 +16,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased font-sans`}>
+      <body
+        className={`antialiased font-sans selection:bg-accent selection:text-white`}>
         <Navbar />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
