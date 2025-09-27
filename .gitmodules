@@ -1,0 +1,3 @@
+[submodule "evs-flow-evm/lib/openzeppelin-contracts"]
+	path = evs-flow-evm/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts

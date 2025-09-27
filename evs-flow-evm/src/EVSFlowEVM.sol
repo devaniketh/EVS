@@ -8,4 +8,20 @@ contract EVSCore {
         uint256 reqDistance;
         bool completed;
     }
+
+    mapping(uint256 => Game) public games;
+    uint256 public gameId;
+
+    function startGame(uint256 amountWaged, uint256 reqDistance) public {
+        games[gameId] = Game(msg.sender, amountWaged, reqDistance, false);
+        gameId++;
+    }
+    
+    function completeGame(uint256 gameId) public {
+        games[gameId].completed = true;
+    }
+
+    function getGame(uint256 gameId) public view returns (Game memory) {
+        return games[gameId];
+    }
 }
