@@ -1,0 +1,44 @@
+{
+  "name": "subway-surfers-game-flow-evm",
+  "version": "1.0.0",
+  "description": "Subway Surfers Game Smart Contracts for Flow EVM",
+  "main": "flow-integration.js",
+  "scripts": {
+    "deploy:testnet": "forge script script/DeployFlowEVM.s.sol --rpc-url https://testnet.evm.nodes.onflow.org --broadcast --verify --chain-id 545",
+    "deploy:mainnet": "forge script script/DeployFlowEVM.s.sol --rpc-url https://mainnet.evm.nodes.onflow.org --broadcast --verify --chain-id 747",
+    "test:flow": "forge script script/TestFlowEVM.s.sol --rpc-url https://testnet.evm.nodes.onflow.org",
+    "test": "forge test",
+    "build": "forge build",
+    "clean": "forge clean",
+    "example": "node flow-integration.js"
+  },
+  "keywords": [
+    "flow",
+    "evm",
+    "blockchain",
+    "game",
+    "smart-contracts",
+    "ethereum",
+    "solidity"
+  ],
+  "author": "Subway Surfers Game Team",
+  "license": "MIT",
+  "dependencies": {
+    "ethers": "^5.7.2"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/subway-surfers-game-flow-evm"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/subway-surfers-game-flow-evm/issues"
+  },
+  "homepage": "https://github.com/your-org/subway-surfers-game-flow-evm#readme"
+}
