@@ -1,12 +1,28 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import kaplay, { KAPLAYCtx, GameObj, Vec2 } from "kaplay";
 
 export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const kRef = useRef<KAPLAYCtx | null>(null);
+  const [coinCount, setCoinCount] = useState(0);
+  const [finalScore, setFinalScore] = useState(0);
+  const [finalCoins, setFinalCoins] = useState(0);
 
+  // Initialize coin count from localStorage
+  useEffect(() => {
+    const savedCoinCount = localStorage.getItem('coinCount');
+    if (savedCoinCount) {
+      setCoinCount(parseInt(savedCoinCount, 10));
+    }
+  }, []);
+
+  // Save coin count to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('coinCount', coinCount.toString());
+  }, [coinCount]);
+// this is the glowing css 
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -117,12 +133,17 @@ export default function Game() {
 
           k.add([
             k.text("Up/Down Arrows to Move", { size: 24, font: "seriousr2b" }),
-            k.pos(k.center().x, k.center().y - 40),
+            k.pos(k.center().x, k.center().y - 60),
             k.anchor("center"),
           ]);
           k.add([
             k.text("Avoid the Obstacles!", { size: 24, font: "seriousr2b" }),
-            k.pos(k.center().x, k.center().y),
+            k.pos(k.center().x, k.center().y - 20),
+            k.anchor("center"),
+          ]);
+          k.add([
+            k.text("Collect Gold Coins!", { size: 24, font: "seriousr2b" }),
+            k.pos(k.center().x, k.center().y + 20),
             k.anchor("center"),
           ]);
           k.add([
@@ -130,7 +151,7 @@ export default function Game() {
               size: 24,
               font: "seriousr2b",
             }),
-            k.pos(k.center().x, k.center().y + 40),
+            k.pos(k.center().x, k.center().y + 60),
             k.anchor("center"),
           ]);
 
@@ -177,7 +198,7 @@ export default function Game() {
             k.z(-1),
           ]);
           k.add([
-            k.rect(k.width() * 0.5, k.height() * 0.6),
+            k.rect(k.width() * 0.6, k.height() * 0.7),
             k.pos(k.center()),
             k.anchor("center"),
             k.color(0, 0, 0),
@@ -185,9 +206,43 @@ export default function Game() {
           ]);
           k.add([
             k.text("Game Over", { size: 90, font: "seriousr2b" }),
-            k.pos(k.center().x, k.center().y - 120),
+            k.pos(k.center().x, k.center().y - 150),
             k.anchor("center"),
           ]);
+
+          // Scorecard display
+          k.add([
+            k.text("Final Scorecard", { size: 40, font: "seriousr2b" }),
+            k.pos(k.center().x, k.center().y - 80),
+            k.anchor("center"),
+          ]);
+
+          // Create dynamic text objects that will be updated
+          const distanceText = k.add([
+            k.text("Distance Covered: 0 m", { size: 28, font: "seriousr2b" }),
+            k.pos(k.center().x, k.center().y - 30),
+            k.anchor("center"),
+          ]);
+
+          const coinsText = k.add([
+            k.text("Coins Collected: 0", { size: 28, font: "seriousr2b" }),
+            k.pos(k.center().x, k.center().y + 10),
+            k.anchor("center"),
+          ]);
+
+          const totalText = k.add([
+            k.text("Total Score: 0", { size: 32, font: "seriousr2b" }),
+            k.pos(k.center().x, k.center().y + 50),
+            k.anchor("center"),
+          ]);
+
+          // Update the text with values from game data
+          const gameFinalScore = k.data?.finalScore || 0;
+          const gameFinalCoins = k.data?.finalCoins || 0;
+          
+          distanceText.text = `Distance Covered: ${gameFinalScore} m`;
+          coinsText.text = `Coins Collected: ${gameFinalCoins}`;
+          totalText.text = `Total Score: ${gameFinalScore + (gameFinalCoins * 10)}`;
 
           const addButton = (txt: string, p: Vec2, f: () => void) => {
             const btn = k.add([
@@ -216,12 +271,12 @@ export default function Game() {
             return btn;
           };
 
-          addButton("Restart (r)", k.vec2(k.center().x, k.center().y), () =>
+          addButton("Restart (r)", k.vec2(k.center().x, k.center().y + 100), () =>
             k.go("main")
           );
           addButton(
             "Main Menu (esc)",
-            k.vec2(k.center().x, k.center().y + 80),
+            k.vec2(k.center().x, k.center().y + 180),
             () => k.go("menu")
           );
 
@@ -466,8 +521,11 @@ export default function Game() {
           });
 
           let score = 0;
+          let gameCoinCount = 0;
+          
+          // Combined score and coin display at the top
           k.add([
-            k.rect(120, 40, { radius: 8 }),
+            k.rect(200, 50, { radius: 8 }),
             k.pos(10, 10),
             k.color(0, 0, 0),
             k.opacity(0.7),
@@ -475,16 +533,21 @@ export default function Game() {
             k.fixed(),
           ]);
           const scoreText = k.add([
-            k.text("0 m", { font: "seriousr2b" }),
-            k.pos(70, 30),
-            k.anchor("center"),
+            k.text("Distance: 0 m", { font: "seriousr2b", size: 16 }),
+            k.pos(20, 20),
+            k.z(100),
+            k.fixed(),
+          ]);
+          const coinText = k.add([
+            k.text(`Coins: 0`, { font: "seriousr2b", size: 16 }),
+            k.pos(20, 40),
             k.z(100),
             k.fixed(),
           ]);
           k.loop(1, () => {
             if (!gameStarted || isPaused) return;
             score += 1;
-            scoreText.text = `${score} m`;
+            scoreText.text = `Distance: ${score} m`;
             if (score > 0 && score % 10 === 0) {
               obstacleSpeed += 250;
             }
@@ -527,10 +590,58 @@ export default function Game() {
             spawnObstaclePair();
           });
 
+          // Coin spawning logic
+          const spawnCoin = () => {
+            if (!gameStarted || isPaused) return;
+            const now = k.time();
+            const availableLanes = lanes.filter(
+              (lane) => now >= laneNextSpawn[lane]
+            );
+
+            if (availableLanes.length === 0) return;
+
+            const randomLane = availableLanes[Math.floor(Math.random() * availableLanes.length)];
+            laneNextSpawn[randomLane] = now + MIN_LANE_GAP / obstacleSpeed;
+
+            const coin = k.add([
+              k.circle(20),
+              k.color(255, 215, 0), // Gold color
+              k.anchor("center"),
+              k.area(),
+              k.pos(k.width() + 100, laneY(randomLane)),
+              k.z(0),
+              "coin",
+              { lane: randomLane },
+            ]);
+
+            // Add a simple spinning animation
+            coin.onUpdate(() => {
+              if (!gameStarted || isPaused) return;
+              coin.angle += 180 * k.dt(); // Rotate 180 degrees per second
+              coin.move(-obstacleSpeed, 0);
+              if (coin.pos.x < -80) coin.destroy();
+            });
+          };
+
+          // Spawn coins less frequently than obstacles
+          k.loop(2.5, () => {
+            if (!gameStarted || isPaused) return;
+            spawnCoin();
+          });
+
           k.onCollide("player", "obstacle", async (player) => {
             if (isCrashing) return;
             isCrashing = true;
             gameStarted = false;
+
+            // Capture final scores
+            setFinalScore(score);
+            setFinalCoins(gameCoinCount);
+
+            // Store the final scores in the game object for the gameover scene
+            if (!k.data) k.data = {};
+            k.data.finalScore = score;
+            k.data.finalCoins = gameCoinCount;
 
             await k.tween(
               player.angle,
@@ -541,6 +652,14 @@ export default function Game() {
             );
 
             k.go("gameover");
+          });
+
+          // Coin collection collision detection
+          k.onCollide("player", "coin", (player, coin) => {
+            coin.destroy();
+            gameCoinCount += 1;
+            coinText.text = `Coins: ${gameCoinCount}`;
+            setCoinCount(gameCoinCount);
           });
         });
 
